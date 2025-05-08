@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paystack Resume Transaction</title>
+    <script src="https://js.paystack.co/v2/inline.js"></script>
+  </head>
+  <body>
+    <h1>Paystack Resume Transaction</h1>
+    <p>Enter your access code to resume the transaction:</p>
+    <input type="text" id="accessCode" placeholder="Enter Access Code" />
+    <button id="resumeTransactionButton">Resume Transaction</button>
+
+    <script>
+      // Function to handle Paystack transaction resumption
+      document
+        .getElementById("resumeTransactionButton")
+        .addEventListener("click", function () {
+          const accessCode = document.getElementById("accessCode").value.trim();
+
+          if (!accessCode) {
+            alert("Please enter a valid access code.");
+            return;
+          }
+
+          // Initialize Paystack Checkout with resumeTransaction
+          const paystack = new PaystackPop();
+          try {
+            paystack.resumeTransaction(accessCode, {
+              onSuccess: async (transaction) => {
+                try {
+                  console.log(transaction)
+                  // Handle successful payment here
+                  window.open("https://google.com", "_blank")
+                } catch (error) {
+                  console.error("Error processing payment:", error);
+                  // Handle payment processing error
+                }
+              },
+              onCancel: () => {
+                // Handle payment cancellation
+                console.log("cancelling")
+              },
+              onLoad: () => {
+                // Handle payment loading state
+                console.log("loading")
+              },
+              onError: (error) => {
+                console.error("Payment failed:", error);
+                // Handle payment error
+              },
+            });
+          } catch (error) {
+            console.error("Payment failed:", error);
+            // Handle overall payment failure
+          }
+        });
+    </script>
+  </body>
+</html>
