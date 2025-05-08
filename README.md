@@ -1,0 +1,1 @@
+# inlineJs_sample
